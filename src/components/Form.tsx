@@ -19,8 +19,8 @@ export default function Form() {
   const handleBadgeChange = (e) => {
     setBadge(e.target.value);
   };
-
-  const MODELS = {
+  type model = Record<string, string[]>;
+  const MODELS: Record<string, model> = {
     ford: {
       Ranger: ["Raptor", "Raptorx", "wildtrak"],
       Falcon: ["XR6", "XR6 Turbo", "XR8"],
@@ -48,11 +48,11 @@ export default function Form() {
         <select name="Make" value={make} onChange={handleMakeChange}>
           {makeItems}
         </select>
-        <select
-          name="Model"
-          value={model}
-          onChange={handleModelChange}
-        ></select>
+        <select name="Model" value={model} onChange={handleModelChange}>
+          {Object.keys(MODELS[make]).map((item) => (
+            <option key={item}>{item}</option>
+          ))}
+        </select>
         <select
           name="Badge"
           value={badge}
