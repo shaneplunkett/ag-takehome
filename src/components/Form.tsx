@@ -1,26 +1,18 @@
 import { useState } from "react";
+import type { ChangeEvent } from "react";
+
+type ModelData = Record<string, string[]>;
 
 export default function Form() {
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [badge, setBadge] = useState("");
   const [error, setError] = useState(null);
+  const [logbook, setLogbook] = useState(null);
 
-  async function handleSubmit(e) {}
+  async function handleSubmit() {}
 
-  const handleMakeChange = (e) => {
-    setMake(e.target.value);
-  };
-
-  const handleModelChange = (e) => {
-    setModel(e.target.value);
-  };
-
-  const handleBadgeChange = (e) => {
-    setBadge(e.target.value);
-  };
-  type model = Record<string, string[]>;
-  const MODELS: Record<string, model> = {
+  const MODELS: Record<string, ModelData> = {
     ford: {
       Ranger: ["Raptor", "Raptorx", "wildtrak"],
       Falcon: ["XR6", "XR6 Turbo", "XR8"],
@@ -36,6 +28,26 @@ export default function Form() {
     },
   };
 
+  function handleMakeChange(e: ChangeEvent<HTMLSelectElement>) {
+    setModel("");
+    setBadge("");
+    setMake(e.target.value);
+  }
+
+  function handleModelChange(e: ChangeEvent<HTMLSelectElement>) {
+    setBadge("");
+    setModel(e.target.value);
+  }
+
+  function handleReset() {
+    setModel("");
+    setBadge("");
+    setMake("");
+    setLogbook(null);
+  }
+
+  function handleFile() {}
+
   const makeItems = Object.keys(MODELS).map((item) => (
     <option key={item}>{item}</option>
   ));
@@ -44,22 +56,67 @@ export default function Form() {
     <>
       <h2>Vehicle Selection Form</h2>
       <p>Please select your vehicle from the below dropdowns</p>
-      <form onSubmit={handleSubmit}>
-        <select name="Make" value={make} onChange={handleMakeChange}>
-          {makeItems}
-        </select>
-        <select name="Model" value={model} onChange={handleModelChange}>
-          {Object.keys(MODELS[make]).map((item) => (
-            <option key={item}>{item}</option>
-          ))}
-        </select>
-        <select
-          name="Badge"
-          value={badge}
-          onChange={handleBadgeChange}
-        ></select>
-        <button type="reset">Reset Form</button>
-        <button type="submit">Submit Form</button>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
+        <label>
+          Select a Make
+          <select
+            name="Make"
+            value={make}
+            onChange={(e) => handleMakeChange(e)}
+          >
+            <option value=""></option>
+            {makeItems}
+          </select>
+        </label>
+        <label>
+          Select a Model
+          <select
+            name="Model"
+            value={model}
+            onChange={(e) => handleModelChange(e)}
+          >
+            <option value=""></option>
+            {make === "" ? (
+              <option value=""></option>
+            ) : (
+              Object.keys(MODELS[make]).map((item) => (
+                <option key={item}>{item}</option>
+              ))
+            )}
+          </select>
+        </label>
+        <label>
+          Select Badge
+          <select
+            name="Badge"
+            value={badge}
+            onChange={(e) => setBadge(e.target.value)}
+          >
+            <option value=""></option>
+            {make === "" || model === "" ? (
+              <option value=""></option>
+            ) : (
+              MODELS[make][model].map((item) => (
+                <option key={item}>{item}</option>
+              ))
+            )}
+          </select>
+        </label>
+        <label>
+          Upload your Logbook:
+          <input
+            name="logbook"
+            type="file"
+            accept=".txt"
+            onChange={handleFile}
+          />
+        </label>
+        <button type="reset" onClick={handleReset}>
+          Reset Form
+        </button>
+        <button type="submit" onClick={handleSubmit}>
+          Submit Form
+        </button>
       </form>
     </>
   );
