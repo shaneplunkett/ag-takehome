@@ -8,7 +8,7 @@ export default function Form() {
   const [model, setModel] = useState("");
   const [badge, setBadge] = useState("");
   const [error, setError] = useState(null);
-  const [logbook, setLogbook] = useState(null);
+  const [logbook, setLogbook] = useState<File | null>(null);
 
   async function handleSubmit() {}
 
@@ -46,7 +46,21 @@ export default function Form() {
     setLogbook(null);
   }
 
-  function handleFile() {}
+  function handleFile(e: ChangeEvent<HTMLInputElement>) {
+    setLogbook(e.target.files?.[0] || null);
+  }
+
+  function handleFord() {
+    setMake("ford");
+    setModel("Falcon");
+    setBadge("XR6 Turbo");
+  }
+
+  function handleTesla() {
+    setMake("tesla");
+    setModel("Model 3");
+    setBadge("Performance");
+  }
 
   const makeItems = Object.keys(MODELS).map((item) => (
     <option key={item}>{item}</option>
@@ -108,14 +122,23 @@ export default function Form() {
             name="logbook"
             type="file"
             accept=".txt"
-            onChange={handleFile}
+            onChange={(e) => handleFile(e)}
+            disabled={badge === "" ? true : false}
           />
         </label>
-        <button type="reset" onClick={handleReset}>
-          Reset Form
+        <h3>Vehicle Quick Select</h3>
+        <button type="button" onClick={handleFord}>
+          Ford Falcon XR6 Turbo
         </button>
+        <button type="button" onClick={handleTesla}>
+          Tesla Model 3
+        </button>
+        <h3>Submit or Start Again</h3>
         <button type="submit" onClick={handleSubmit}>
           Submit Form
+        </button>
+        <button type="reset" onClick={handleReset}>
+          Reset Form
         </button>
       </form>
     </>
