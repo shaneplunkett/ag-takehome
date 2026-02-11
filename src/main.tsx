@@ -1,10 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Form from "./components/Form";
+import FormContext from "./components/ui/FormContext";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Form />
+    <FormContext />
   </StrictMode>,
 );
