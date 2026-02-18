@@ -1,17 +1,6 @@
-import { createContext } from "react";
 import { useState } from "react";
+import { FacetContext } from "@/lib/useVehicle";
 import type { PropsWithChildren } from "react";
-
-interface VehicleContext {
-  make: string;
-  model: string;
-  badge: string;
-  handleMakeChange: (make: string) => void;
-  handleModelChange: (model: string) => void;
-  handleBadgeChange: (badge: string) => void;
-}
-
-const FacetContext = createContext<VehicleContext | null>(null);
 
 export function VehicleProvider({ children }: PropsWithChildren) {
   const [make, setMake] = useState("");
