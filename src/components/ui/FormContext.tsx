@@ -37,7 +37,3 @@ export function VehicleProvider({ children }: PropsWithChildren) {
     </FacetContext.Provider>
   );
 }
-
-export default function FormContext() {
-  return <div>Sup</div>;
-}
