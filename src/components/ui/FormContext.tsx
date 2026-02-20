@@ -22,6 +22,12 @@ export function VehicleProvider({ children }: PropsWithChildren) {
     setBadge(value);
   };
 
+  const handleSet = (make: string, model: string, badge: string) => {
+    setMake(make);
+    setModel(model);
+    setBadge(badge);
+  };
+
   return (
     <FacetContext.Provider
       value={{
@@ -31,6 +37,7 @@ export function VehicleProvider({ children }: PropsWithChildren) {
         handleMakeChange,
         handleModelChange,
         handleBadgeChange,
+        handleSet,
       }}
     >
       {children}

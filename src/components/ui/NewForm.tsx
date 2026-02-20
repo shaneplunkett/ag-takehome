@@ -7,6 +7,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
 type ModelData = Record<string, string[]>;
 
@@ -18,6 +19,7 @@ export default function NewForm() {
     handleMakeChange,
     handleModelChange,
     handleBadgeChange,
+    handleSet,
   } = useVehicleContext();
   const MODELS: Record<string, ModelData> = {
     Ford: {
@@ -90,6 +92,28 @@ export default function NewForm() {
             )}
           </SelectContent>
         </Select>
+        <h3>Vehicle Quick Select</h3>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handleSet("Ford", "Falcon", "XR6 Turbo")}
+        >
+          Ford Falcon XR6 Turbo
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handleSet("Tesla", "Model 3", "Performance")}
+        >
+          Tesla Model 3
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={() => handleSet("", "", "")}
+        >
+          Reset
+        </Button>
       </form>
     </>
   );
