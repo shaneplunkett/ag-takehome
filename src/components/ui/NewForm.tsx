@@ -1,4 +1,12 @@
 import { useVehicleContext } from "@/lib/useVehicle";
+import {
+  Select,
+  SelectContent,
+  SelectTrigger,
+  SelectValue,
+  SelectItem,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 
 type ModelData = Record<string, string[]>;
 
@@ -12,73 +20,76 @@ export default function NewForm() {
     handleBadgeChange,
   } = useVehicleContext();
   const MODELS: Record<string, ModelData> = {
-    ford: {
+    Ford: {
       Ranger: ["Raptor", "Raptorx", "wildtrak"],
       Falcon: ["XR6", "XR6 Turbo", "XR8"],
       "Falcon Ute": ["XR6", "XR6 Turbo"],
     },
-    bmw: {
+    BMW: {
       "130d": ["xDrive 26d", "xDrive 30d"],
       "240i": ["xDrive 30d", "xDrive 50d"],
       "320e": ["xDrive 75d", "xDrive 80d", "xDrive 85d"],
     },
-    tesla: {
+    Tesla: {
       "Model 3": ["Performance", "Long Range", "Dual Motor"],
     },
   };
   const makeItems = Object.keys(MODELS).map((item) => (
-    <option key={item}>{item}</option>
+    <SelectItem key={item} value={item}>
+      {item}
+    </SelectItem>
   ));
   return (
     <>
       <h2>Vehicle Selection Form</h2>
       <p>Please select your vehicle from the below dropdowns</p>
       <form>
-        <label>
-          Select a Make
-          <select
-            name="Make"
-            value={make}
-            onChange={(e) => handleMakeChange(e.target.value)}
-          >
-            <option value=""></option>
+        <Label>Select a Make</Label>
+        <Select value={make} onValueChange={(e) => handleMakeChange(e ?? "")}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value=""></SelectItem>
             {makeItems}
-          </select>
-        </label>
-        <label>
-          Select a Model
-          <select
-            name="Model"
-            value={model}
-            onChange={(e) => handleModelChange(e.target.value)}
-          >
-            <option value=""></option>
+          </SelectContent>
+        </Select>
+        <Label>Select a Model</Label>
+        <Select value={model} onValueChange={(e) => handleModelChange(e ?? "")}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value=""></SelectItem>
             {make === "" ? (
-              <option value=""></option>
+              <SelectItem value=""></SelectItem>
             ) : (
               Object.keys(MODELS[make]).map((item) => (
-                <option key={item}>{item}</option>
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
               ))
             )}
-          </select>
-        </label>
-        <label>
-          Select Badge
-          <select
-            name="Badge"
-            value={badge}
-            onChange={(e) => handleBadgeChange(e.target.value)}
-          >
-            <option value=""></option>
+          </SelectContent>
+        </Select>
+        <Label>Select a Badge</Label>
+        <Select value={badge} onValueChange={(e) => handleBadgeChange(e ?? "")}>
+          <SelectTrigger>
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value=""></SelectItem>
             {make === "" || model === "" ? (
-              <option value=""></option>
+              <SelectItem value=""></SelectItem>
             ) : (
               MODELS[make][model].map((item) => (
-                <option key={item}>{item}</option>
+                <SelectItem key={item} value={item}>
+                  {item}
+                </SelectItem>
               ))
             )}
-          </select>
-        </label>
+          </SelectContent>
+        </Select>
       </form>
     </>
   );
