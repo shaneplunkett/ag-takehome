@@ -8,6 +8,7 @@ interface VehicleContext {
   handleMakeChange: (make: string) => void;
   handleModelChange: (model: string) => void;
   handleBadgeChange: (badge: string) => void;
+  handleSet: (make: string, model: string, badge: string) => void;
 }
 
 export const FacetContext = createContext<VehicleContext | null>(null);
