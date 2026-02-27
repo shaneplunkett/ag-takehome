@@ -2,15 +2,25 @@ import { useContext } from "react";
 import { createContext } from "react";
 
 interface VehicleContext {
-  make: string;
-  model: string;
-  badge: string;
-  handleMakeChange: (make: string) => void;
-  handleModelChange: (model: string) => void;
-  handleBadgeChange: (badge: string) => void;
-  handleSet: (make: string, model: string, badge: string) => void;
+  make: string | null;
+  model: string | null;
+  badge: string | null;
+  handleMakeChange: (make: string | null) => void;
+  handleModelChange: (model: string | null) => void;
+  handleBadgeChange: (badge: string | null) => void;
+  handleSet: (
+    make: string | null,
+    model: string | null,
+    badge: string | null,
+  ) => void;
 }
 
+interface SelectItems {
+  value: string | null;
+  label: string;
+}
+
+export function createItems(value: string[]): SelectItems[] {}
 export const FacetContext = createContext<VehicleContext | null>(null);
 
 export function useVehicleContext() {
@@ -24,7 +34,7 @@ export type ModelData = Record<string, string[]>;
 
 export const MODELS: Record<string, ModelData> = {
   Ford: {
-    Ranger: ["Raptor", "Raptorx", "wildtrak"],
+    Ranger: ["Raptor", "Raptorx", "Wildtrak"],
     Falcon: ["XR6", "XR6 Turbo", "XR8"],
     "Falcon Ute": ["XR6", "XR6 Turbo"],
   },

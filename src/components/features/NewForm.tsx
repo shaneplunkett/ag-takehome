@@ -29,6 +29,7 @@ export default function NewForm() {
     handleBadgeChange,
     handleSet,
   } = useVehicleContext();
+
   const makeItems = Object.keys(MODELS).map((item) => (
     <SelectItem key={item} value={item}>
       {item}
@@ -36,15 +37,15 @@ export default function NewForm() {
   ));
   return (
     <div className="flex items-center justify-center h-screen">
-      <Card className="wfull max-w-sm">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>Vehicle Selection</CardTitle>
           <CardDescription>Select Your Vehicle Below</CardDescription>
           <CardAction>
             <Button
               size="sm"
-              variant="link"
-              onClick={() => handleSet("", "", "")}
+              variant="destructive"
+              onClick={() => handleSet(null, null, null)}
             >
               Reset
             </Button>
@@ -52,62 +53,58 @@ export default function NewForm() {
         </CardHeader>
         <CardContent>
           <Label className="p-1">Select a Make</Label>
-          <Select value={make} onValueChange={(e) => handleMakeChange(e ?? "")}>
+          <Select
+            value={make}
+            onValueChange={(e) => handleMakeChange(e ?? null)}
+          >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
-            <SelectContent>
-              <SelectItem value=""></SelectItem>
-              {makeItems}
-            </SelectContent>
+            <SelectContent>{makeItems}</SelectContent>
           </Select>
           <Label className="p-1 mt-2">Select a Model</Label>
           <Select
             value={model}
-            onValueChange={(e) => handleModelChange(e ?? "")}
+            disabled={!make}
+            onValueChange={(e) => handleModelChange(e ?? null)}
           >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value=""></SelectItem>
-              {make === "" ? (
-                <SelectItem value=""></SelectItem>
-              ) : (
-                Object.keys(MODELS[make]).map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))
-              )}
+              {make === null
+                ? null
+                : Object.keys(MODELS[make]).map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))}
             </SelectContent>
           </Select>
           <Label className="p-1 mt-2">Select a Badge</Label>
           <Select
             value={badge}
-            onValueChange={(e) => handleBadgeChange(e ?? "")}
+            onValueChange={(e) => handleBadgeChange(e ?? null)}
+            disabled={!make || !model}
           >
             <SelectTrigger className="w-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value=""></SelectItem>
-              {make === "" || model === "" ? (
-                <SelectItem value=""></SelectItem>
-              ) : (
-                MODELS[make][model].map((item) => (
-                  <SelectItem key={item} value={item}>
-                    {item}
-                  </SelectItem>
-                ))
-              )}
+              {make === null || model === null
+                ? null
+                : MODELS[make][model].map((item) => (
+                    <SelectItem key={item} value={item}>
+                      {item}
+                    </SelectItem>
+                  ))}
             </SelectContent>
           </Select>
         </CardContent>
-        <CardFooter>
+        <CardFooter className="flex-col gap-2">
           <Button
             size="xs"
-            variant="outline"
+            className="w-full"
             onClick={() => handleSet("Ford", "Falcon", "XR6 Turbo")}
           >
             Ford Falcon XR6 Turbo
@@ -115,6 +112,7 @@ export default function NewForm() {
           <Button
             size="xs"
             variant="outline"
+            className="w-full"
             onClick={() => handleSet("Tesla", "Model 3", "Performance")}
           >
             Tesla Model 3
